@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# Source things
+SWAL_SOURCE()
+{
+  SWAL_DEFAULT_CONFIG
+  . ~/.config/swal/swalrc || . $SWAL_DOTDIR/swalrc
+}
+
+SWAL_CHECK()
+{
+  ls $SWAL_BINDIR/xwallpaper || SWAL_DIE
+  ls $SWAL_DMENUDIR || SWAL_DIE
+}
+
+SWAL_DIE()
+{
+  SWAL_EXIT=1 && exit 1
+}
+
+SWAL_SELWALLPAPER()
+{
+  SWAL_SELWALLPAPER="$(ls $SWAL_WALLPAPERDIR | $SWAL_DMENUDIR)"
+}
+
+SWAL_SETTYPE()
+{
+  SWAL_TYPE=$(printf "center\ntile\nzoom\nstretch" | $SWAL_DMENUDIR) && SWAL_TYPE="--$SWAL_TYPE"
+}
+
+SWAL_SETWALLPAPER()
+{
+  $SWAL_OPT $SWAL_TYPE $SWAL_WALLPAPERDIR/$SWAL_SELWALLPAPER
+}
+
+SWAL_DEFAULT_CONFIG()
+{
+  SWAL_WALLPAPERDIR=~/Pictures
+  SWAL_DMENUDIR=/usr/bin/dmenu
+  SWAL_OPT=xwallpaper
+  SWAL_BINDIR=/usr/bin
+}
+
+SWAL_SOURCE
+SWAL_CHECK
+SWAL_SELWALLPAPER
+SWAL_SETTYPE
+SWAL_SETWALLPAPER
